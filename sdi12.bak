@@ -1,0 +1,47 @@
+#include<18f4520.h>
+
+#FUSES H4
+
+#use delay(clock=32MHz, crystal=8MHz)
+//#USE RS232(baud=1200, INVERT, xmit=PIN_C1, STREAM=RSOUT)
+#USE RS232(baud=1200, xmit=PIN_C6, rcv=PIN_C7)
+
+static short ctrl, print;
+static char pn;
+
+void send_break(void) {
+   output_high(PIN_C1);
+   delay_ms(12);
+   output_low(PIN_c1);
+   delay_ms(1);
+}
+
+int main(void) {
+   output_high(PIN_C1);
+   while(TRUE) {
+      if (!input(PIN_A0)) {
+         delay_ms(200);
+         if(!input(PIN_A0) && ctrl) {
+            ctrl = 0;
+            //print = ~print;
+            send_break();
+            printf("0!");
+            //delay_ms(1000);
+            //printf("\r\n");
+            //delay_ms(10);
+         }
+      } else if(!ctrl) {
+         delay_ms(200);
+         ctrl = 1;
+      }
+      if(print) {
+         send_break();
+         printf("0M!");
+         delay_ms(1000);
+         printf("\r");
+         delay_ms(10);
+      }
+   }
+   return 0;
+}
+

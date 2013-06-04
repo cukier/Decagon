@@ -1,0 +1,73 @@
+000     @SCRATCH
+001     @SCRATCH
+001     _RETURN_
+002     @SCRATCH
+003     @SCRATCH
+004.0   ctrl
+004.1   print
+005     pn
+006     MAIN.@SCRATCH1
+006     @PSTRINGC_1200_31766_31767.@SCRATCH1
+007     @delay_ms1.P1
+007     @PSTRINGC_1200_31766_31767.@SCRATCH2
+F83     PSP_DATA
+FB4.6   C1OUT
+FB4.7   C2OUT
+FBB     CCP_2_LOW
+FBB     CCP_2
+FBC     CCP_2_HIGH
+FBE     CCP_1_LOW
+FBE     CCP_1
+FBF     CCP_1_HIGH
+FE1-FE2 @READ_PACKED_MEMORY.P1
+FE1-FE2 @WRITE_PACKED_MEMORY.P2
+FE9-FEA @READ_PACKED_MEMORY.P1
+FE9-FEA @WRITE_PROGRAM_MEMORY.P2
+FE9-FEA @READ_PROGRAM_MEMORY.P3
+FE9-FEA @WRITE_PACKED_MEMORY.P4
+FF6-FF8 @READ_PROGRAM_MEMORY.P1
+FF6-FF8 @WRITE_PROGRAM_MEMORY.P2
+
+ROM Allocation:
+000A  @delay_ms1
+0030  send_break
+006A  MAIN
+0004  @const76
+0046  @PSTRINGC_1200_31766_31767
+006A  @cinit
+
+
+User Memory space: 
+
+User Memory space: 
+
+Project Directory:
+    C:\Users\cuki\Desktop\
+
+Project Files:
+    sdi12.c                                                 [28-mai-13 11:48  CRC=2623300D]
+    ..\..\..\PICC\devices\18f4520.h                         [27-jul-11 18:03  CRC=1674978C]
+
+Source signature=530C5F25
+
+Units:
+    C:\Users\cuki\Desktop\sdi12 (main)
+
+Compiler Settings:
+    Processor:      PIC18F4520
+    Pointer Size:   16
+    ADC Range:      0-255
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    Errors:      sdi12.err
+    Ext Symbols: sdi12.esym
+    INHX32:      sdi12.hex
+    Symbols:     sdi12.sym
+    List:        sdi12.lst
+    Debug/COFF:  sdi12.cof
+    Project:     sdi12.PJT
+    Call Tree:   sdi12.tre
+    Statistics:  sdi12.STA

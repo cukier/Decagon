@@ -1,0 +1,46 @@
+
+ROM used: 274 (1%)
+          274 (1%) including unused fragments
+
+          1 Average locations per line
+          10 Average locations per statement
+
+RAM used: 7 (0%) at main() level
+          8 (1%) worst case
+
+Stack used: 2 worst case (out of 31 total available)
+
+Lines Stmts  %   Files
+----- ----- ---  -----
+   48    27 100  sdi12.c
+  470     0   0  ..\..\..\PICC\devices\18f4520.h
+----- -----
+  518    27 Total
+
+Page ROM  %  RAM   Vol Diff  Functions:
+---- --- --- ---   --- ----  ----------
+0     38   7   1    17  1.3  @delay_ms1
+0     22   4   0    72  1.2  send_break
+0    168  31   1   450  4.6  MAIN
+0      6   1   0             @const76
+0     36   7   2   467  4.6  @PSTRINGC_1200_31766_31767
+
+Program metrics:
+    Functions               4
+    Statements              27
+    Comments                109
+    Volume (V)              1307
+    Difficilty (D)          11.9
+    Effort to implement (E) 15569
+    Time to implement (T)   14 minutes
+    Est Delivered Bugs (B)  0
+    Cyclomatic Complexity   9
+    Maintainability (MI)    158
+
+ Segment     Used  Free
+-----------  ----  ----
+00000-00002     4  0  
+00004-07FFE   270  32494  
+
+
+
