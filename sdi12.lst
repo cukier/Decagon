@@ -1,15 +1,15 @@
-CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
+CCS PCH C Compiler, Version 4.124, 5967               05-jun-13 08:58
 
                Filename: E:\Eletronica\Projetos\Decagon\sdi12.lst
 
-               ROM used: 912 bytes (3%)
-                         Largest free fragment is 31852
-               RAM used: 161 (10%) at main() level
-                         168 (11%) worst case
-               Stack:    2 worst case (1 in main + 1 for interrupts)
+               ROM used: 5300 bytes (16%)
+                         Largest free fragment is 27464
+               RAM used: 1193 (78%) at main() level
+                         1229 (80%) worst case
+               Stack:    3 worst case (2 in main + 1 for interrupts)
 
 *
-0000:  GOTO   01CC
+0000:  GOTO   09EC
 *
 0008:  MOVWF  04
 000A:  MOVFF  FD8,05
@@ -34,7 +34,7 @@ CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
 0054:  BTFSS  FF2.5
 0056:  GOTO   0060
 005A:  BTFSC  FF2.2
-005C:  GOTO   00E2
+005C:  GOTO   00DE
 0060:  BTFSS  F9D.5
 0062:  GOTO   006C
 0066:  BTFSC  F9E.5
@@ -527,66 +527,12 @@ CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
 ....................   char *s; 
 ....................  
 ....................   for (s = s1; n > 0 && *s2 != '\0'; n--) 
-013C:  MOVFF  9C,A2
-0140:  MOVFF  9B,A1
-0144:  MOVF   x9F,F
-0146:  BNZ   014C
-0148:  MOVF   xA0,F
-014A:  BZ    019A
-014C:  MOVFF  9E,03
-0150:  MOVFF  9D,FE9
-0154:  MOVFF  9E,FEA
-0158:  MOVF   FEF,F
-015A:  BZ    019A
 ....................      *s++ = *s2++; 
-015C:  MOVFF  A2,03
-0160:  MOVF   xA1,W
-0162:  INCF   xA1,F
-0164:  BTFSC  FD8.2
-0166:  INCF   xA2,F
-0168:  MOVWF  xA3
-016A:  MOVFF  03,A4
-016E:  MOVFF  9E,03
-0172:  MOVF   x9D,W
-0174:  INCF   x9D,F
-0176:  BTFSC  FD8.2
-0178:  INCF   x9E,F
-017A:  MOVWF  FE9
-017C:  MOVFF  03,FEA
-0180:  MOVFF  FEF,A5
-0184:  MOVFF  A4,FEA
-0188:  MOVFF  A3,FE9
-018C:  MOVFF  A5,FEF
-0190:  MOVF   x9F,W
-0192:  BTFSC  FD8.2
-0194:  DECF   xA0,F
-0196:  DECF   x9F,F
-0198:  BRA    0144
 ....................   for (; n > 0; n--) 
-019A:  MOVF   x9F,F
-019C:  BNZ   01A2
-019E:  MOVF   xA0,F
-01A0:  BZ    01C0
 ....................      *s++ = '\0'; 
-01A2:  MOVFF  A2,03
-01A6:  MOVF   xA1,W
-01A8:  INCF   xA1,F
-01AA:  BTFSC  FD8.2
-01AC:  INCF   xA2,F
-01AE:  MOVWF  FE9
-01B0:  MOVFF  03,FEA
-01B4:  CLRF   FEF
-01B6:  MOVF   x9F,W
-01B8:  BTFSC  FD8.2
-01BA:  DECF   xA0,F
-01BC:  DECF   x9F,F
-01BE:  BRA    019A
 ....................  
 ....................   return(s1); 
-01C0:  MOVFF  9B,01
-01C4:  MOVFF  9C,02
 .................... } 
-01C8:  GOTO   036A (RETURN)
 .................... /***********************************************************/ 
 ....................  
 .................... /*concatenation functions*/ 
@@ -1553,6 +1499,21 @@ CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
 ....................  
 .................... float strtof(char *s, char *endptr) 
 .................... { 
+*
+0666:  MOVLB  4
+0668:  CLRF   xAF
+066A:  CLRF   xAE
+066C:  CLRF   xAD
+066E:  MOVLW  7F
+0670:  MOVWF  xAC
+0672:  CLRF   xB3
+0674:  CLRF   xB2
+0676:  CLRF   xB1
+0678:  CLRF   xB0
+067A:  BSF    xB4.0
+067C:  BCF    xB4.1
+067E:  BCF    xB4.2
+0680:  CLRF   xB6
 ....................    float pow10 = 1.0; 
 ....................    float result = 0.0; 
 ....................    int1 skip = 1, sign = 0, point = 0; 
@@ -1560,60 +1521,261 @@ CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
 ....................    unsigned int8 ptr = 0; 
 ....................  
 ....................    if (!s) 
+0682:  MOVF   xA8,W
+0684:  IORWF  xA9,W
+0686:  BNZ   0692
 ....................       return 0; 
+0688:  CLRF   00
+068A:  CLRF   01
+068C:  CLRF   02
+068E:  CLRF   03
+0690:  BRA    08B0
 ....................  
 ....................    for(c=s[ptr++]; c!=0; c=s[ptr++]) 
+0692:  MOVF   xB6,W
+0694:  INCF   xB6,F
+0696:  CLRF   03
+0698:  ADDWF  xA8,W
+069A:  MOVWF  FE9
+069C:  MOVF   xA9,W
+069E:  ADDWFC 03,W
+06A0:  MOVWF  FEA
+06A2:  MOVFF  FEF,4B5
+06A6:  MOVF   xB5,F
+06A8:  BTFSC  FD8.2
+06AA:  BRA    0836
 ....................    { 
 ....................       if (skip && !isspace(c)) 
+06AC:  BTFSS  xB4.0
+06AE:  BRA    06CE
+06B0:  MOVF   xB5,W
+06B2:  SUBLW  20
+06B4:  BZ    06CE
 ....................       { 
 ....................          skip = 0; 
+06B6:  BCF    xB4.0
 ....................          if (c == '+') 
+06B8:  MOVF   xB5,W
+06BA:  SUBLW  2B
+06BC:  BNZ   06C4
 ....................          { 
 ....................             sign = 0; 
+06BE:  BCF    xB4.1
 ....................             continue; 
+06C0:  BRA    081C
 ....................          }             
 ....................          else if (c == '-') 
+06C2:  BRA    06CE
+06C4:  MOVF   xB5,W
+06C6:  SUBLW  2D
+06C8:  BNZ   06CE
 ....................          { 
 ....................             sign = 1; 
+06CA:  BSF    xB4.1
 ....................             continue; 
+06CC:  BRA    081C
 ....................          } 
 ....................       } 
 ....................       if (!skip && (c == '.') && !point) 
+06CE:  BTFSC  xB4.0
+06D0:  BRA    06E0
+06D2:  MOVF   xB5,W
+06D4:  SUBLW  2E
+06D6:  BNZ   06E0
+06D8:  BTFSC  xB4.2
+06DA:  BRA    06E0
 ....................          point = 1; 
+06DC:  BSF    xB4.2
 ....................       else if (!skip && isdigit(c)) 
+06DE:  BRA    081C
+06E0:  BTFSC  xB4.0
+06E2:  BRA    0816
+06E4:  MOVF   xB5,W
+06E6:  SUBLW  2F
+06E8:  BTFSC  FD8.0
+06EA:  BRA    0816
+06EC:  MOVF   xB5,W
+06EE:  SUBLW  39
+06F0:  BTFSS  FD8.0
+06F2:  BRA    0816
 ....................       { 
 ....................          c -= '0'; 
+06F4:  MOVLW  30
+06F6:  SUBWF  xB5,F
 ....................          if (point) 
+06F8:  BTFSS  xB4.2
+06FA:  BRA    07A2
 ....................          { 
 ....................             pow10 = pow10 * 10.0; 
+06FC:  MOVFF  4AF,4BA
+0700:  MOVFF  4AE,4B9
+0704:  MOVFF  4AD,4B8
+0708:  MOVFF  4AC,4B7
+070C:  CLRF   xBE
+070E:  CLRF   xBD
+0710:  MOVLW  20
+0712:  MOVWF  xBC
+0714:  MOVLW  82
+0716:  MOVWF  xBB
+0718:  MOVLB  0
+071A:  RCALL  0162
+071C:  MOVFF  03,4AF
+0720:  MOVFF  02,4AE
+0724:  MOVFF  01,4AD
+0728:  MOVFF  00,4AC
 ....................             result += (float)c / pow10;    
+072C:  MOVLB  4
+072E:  CLRF   xBC
+0730:  MOVFF  4B5,4BB
+0734:  MOVLB  0
+0736:  RCALL  0258
+0738:  MOVFF  00,4B7
+073C:  MOVFF  01,4B8
+0740:  MOVFF  02,4B9
+0744:  MOVFF  03,4BA
+0748:  MOVFF  03,4BE
+074C:  MOVFF  02,4BD
+0750:  MOVFF  01,4BC
+0754:  MOVFF  00,4BB
+0758:  MOVFF  4AF,4C2
+075C:  MOVFF  4AE,4C1
+0760:  MOVFF  4AD,4C0
+0764:  MOVFF  4AC,4BF
+0768:  BRA    028E
+076A:  BCF    FD8.1
+076C:  MOVFF  4B3,4BE
+0770:  MOVFF  4B2,4BD
+0774:  MOVFF  4B1,4BC
+0778:  MOVFF  4B0,4BB
+077C:  MOVFF  03,4C2
+0780:  MOVFF  02,4C1
+0784:  MOVFF  01,4C0
+0788:  MOVFF  00,4BF
+078C:  RCALL  03EE
+078E:  MOVFF  03,4B3
+0792:  MOVFF  02,4B2
+0796:  MOVFF  01,4B1
+079A:  MOVFF  00,4B0
 ....................          } 
 ....................          else 
+079E:  BRA    0812
+07A0:  MOVLB  4
 ....................          { 
 ....................             result = 10.0 * result + (float)c; 
+07A2:  CLRF   xBA
+07A4:  CLRF   xB9
+07A6:  MOVLW  20
+07A8:  MOVWF  xB8
+07AA:  MOVLW  82
+07AC:  MOVWF  xB7
+07AE:  MOVFF  4B3,4BE
+07B2:  MOVFF  4B2,4BD
+07B6:  MOVFF  4B1,4BC
+07BA:  MOVFF  4B0,4BB
+07BE:  MOVLB  0
+07C0:  RCALL  0162
+07C2:  MOVFF  00,4B7
+07C6:  MOVFF  01,4B8
+07CA:  MOVFF  02,4B9
+07CE:  MOVFF  03,4BA
+07D2:  MOVLB  4
+07D4:  CLRF   xBC
+07D6:  MOVFF  4B5,4BB
+07DA:  MOVLB  0
+07DC:  RCALL  0258
+07DE:  BCF    FD8.1
+07E0:  MOVFF  4BA,4BE
+07E4:  MOVFF  4B9,4BD
+07E8:  MOVFF  4B8,4BC
+07EC:  MOVFF  4B7,4BB
+07F0:  MOVFF  03,4C2
+07F4:  MOVFF  02,4C1
+07F8:  MOVFF  01,4C0
+07FC:  MOVFF  00,4BF
+0800:  RCALL  03EE
+0802:  MOVFF  03,4B3
+0806:  MOVFF  02,4B2
+080A:  MOVFF  01,4B1
+080E:  MOVFF  00,4B0
 ....................          } 
 ....................       } 
 ....................       else if (!skip) 
+0812:  BRA    081E
+0814:  MOVLB  4
+0816:  BTFSC  xB4.0
+0818:  BRA    081C
 ....................          break; 
+081A:  BRA    0836
+081C:  MOVLB  0
 ....................    } 
+081E:  MOVLB  4
+0820:  MOVF   xB6,W
+0822:  INCF   xB6,F
+0824:  CLRF   03
+0826:  ADDWF  xA8,W
+0828:  MOVWF  FE9
+082A:  MOVF   xA9,W
+082C:  ADDWFC 03,W
+082E:  MOVWF  FEA
+0830:  MOVFF  FEF,4B5
+0834:  BRA    06A6
 ....................  
 ....................    if (sign) 
+0836:  BTFSS  xB4.1
+0838:  BRA    086C
 ....................       result = -1*result; 
+083A:  CLRF   xBA
+083C:  CLRF   xB9
+083E:  MOVLW  80
+0840:  MOVWF  xB8
+0842:  MOVLW  7F
+0844:  MOVWF  xB7
+0846:  MOVFF  4B3,4BE
+084A:  MOVFF  4B2,4BD
+084E:  MOVFF  4B1,4BC
+0852:  MOVFF  4B0,4BB
+0856:  MOVLB  0
+0858:  RCALL  0162
+085A:  MOVFF  03,4B3
+085E:  MOVFF  02,4B2
+0862:  MOVFF  01,4B1
+0866:  MOVFF  00,4B0
+086A:  MOVLB  4
 ....................        
 ....................    if(endptr) 
+086C:  MOVF   xAA,W
+086E:  IORWF  xAB,W
+0870:  BZ    08A0
 ....................    { 
 ....................       if (ptr) { 
+0872:  MOVF   xB6,F
+0874:  BZ    088E
 ....................          ptr--; 
+0876:  DECF   xB6,F
 ....................        #IF LONG_POINTERS  
 ....................          *((int16 *)endptr)= s+ptr;  
+0878:  MOVFF  4AA,FE9
+087C:  MOVFF  4AB,FEA
+0880:  MOVF   xB6,W
+0882:  ADDWF  xA8,W
+0884:  MOVWF  FEF
+0886:  MOVLW  00
+0888:  ADDWFC xA9,W
+088A:  MOVWF  FEC
 ....................        #ELSE 
 ....................          *((char *)endptr)=s+ptr; 
 ....................        #ENDIF 
 ....................       } 
 ....................       else 
+088C:  BRA    08A0
 ....................       { 
 ....................       #IF LONG_POINTERS 
 ....................       *((int16 *)endptr)= s;  
+088E:  MOVFF  4AA,FE9
+0892:  MOVFF  4AB,FEA
+0896:  MOVFF  4A9,FEC
+089A:  MOVF   FED,F
+089C:  MOVFF  4A8,FEF
 ....................       #ELSE 
 ....................       *((char *)endptr)=s; 
 ....................       #ENDIF 
@@ -1621,7 +1783,13 @@ CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
 ....................    } 
 ....................  
 ....................    return(result); 
+08A0:  MOVFF  4B0,00
+08A4:  MOVFF  4B1,01
+08A8:  MOVFF  4B2,02
+08AC:  MOVFF  4B3,03
 .................... } 
+08B0:  MOVLB  0
+08B2:  GOTO   1454 (RETURN)
 ....................  
 .................... #if defined(__PCD__) 
 .................... float48 strtof48(char *s, char *endptr) 
@@ -2023,32 +2191,35 @@ CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
 ....................  
 .................... #use delay(clock=32MHz, crystal=8MHz) 
 *
-00EE:  CLRF   FEA
-00F0:  MOVLW  9B
-00F2:  MOVWF  FE9
-00F4:  MOVF   FEF,W
-00F6:  BZ    0112
-00F8:  MOVLW  0A
-00FA:  MOVWF  01
-00FC:  CLRF   00
-00FE:  DECFSZ 00,F
-0100:  BRA    00FE
-0102:  DECFSZ 01,F
-0104:  BRA    00FC
-0106:  MOVLW  5F
-0108:  MOVWF  00
-010A:  DECFSZ 00,F
-010C:  BRA    010A
-010E:  DECFSZ FEF,F
-0110:  BRA    00F8
-0112:  RETURN 0
+013A:  MOVLW  04
+013C:  MOVWF  FEA
+013E:  MOVLW  A6
+0140:  MOVWF  FE9
+0142:  MOVF   FEF,W
+0144:  BZ    0160
+0146:  MOVLW  0A
+0148:  MOVWF  01
+014A:  CLRF   00
+014C:  DECFSZ 00,F
+014E:  BRA    014C
+0150:  DECFSZ 01,F
+0152:  BRA    014A
+0154:  MOVLW  5F
+0156:  MOVWF  00
+0158:  DECFSZ 00,F
+015A:  BRA    0158
+015C:  DECFSZ FEF,F
+015E:  BRA    0146
+0160:  RETURN 0
 .................... //#USE RS232(baud=1200, INVERT, xmit=PIN_C1, STREAM=RSOUT) 
-.................... #USE RS232(baud=1200, xmit=PIN_C6, rcv=PIN_C7) 
+.................... #USE RS232(baud=9600, xmit=PIN_C6, rcv=PIN_C7) 
+....................  
+.................... #define buffer_size 512 
 ....................  
 .................... static short ctrl, print; 
-.................... static int rcv[100], cmd[10], contBuff, temp, aux[6], cont; 
+.................... static int rcv[buffer_size], contBuff, aux[buffer_size], contAux, nrAchados; 
 .................... static int t0Setup = T0_INTERNAL | T0_DIV_64 | 0x80; 
-.................... static signed int press; 
+.................... static float nrs[buffer_size >> 4]; 
 .................... int *p; 
 ....................  
 .................... #int_rda 
@@ -2056,349 +2227,1436 @@ CCS PCH C Compiler, Version 4.124, 5967               31-mai-13 14:34
 .................... 	clear_interrupt(INT_RDA); 
 .................... 	rcv[contBuff++] = getc(); 
 *
-00BA:  MOVF   x8E,W
-00BC:  INCF   x8E,F
-00BE:  CLRF   03
+00BA:  MOVLB  2
+00BC:  MOVF   x20,W
+00BE:  INCF   x20,F
 00C0:  ADDLW  20
 00C2:  MOVWF  FE9
-00C4:  MOVLW  00
-00C6:  ADDWFC 03,W
-00C8:  MOVWF  FEA
+00C4:  CLRF   FEA
+00C6:  BTFSC  FD8.0
+00C8:  INCF   FEA,F
 00CA:  BTFSS  F9E.5
 00CC:  BRA    00CA
 00CE:  MOVFF  FAE,FEF
 .................... 	setup_timer_0(t0Setup); 
-00D2:  MOVFF  97,FD5
-.................... 	set_timer0(0); 
-00D6:  CLRF   FD7
-00D8:  CLRF   FD6
-.................... 	clear_interrupt(INT_TIMER0); 
-00DA:  BCF    FF2.2
+00D2:  MOVFF  423,FD5
 .................... } 
 ....................  
-00DC:  BCF    F9E.5
-00DE:  GOTO   006C
+00D6:  BCF    F9E.5
+00D8:  MOVLB  0
+00DA:  GOTO   006C
 .................... #INT_TIMER0 
 .................... void timer0_isr() { 
 .................... 	clear_interrupt(INT_TIMER0); 
-00E2:  BCF    FF2.2
+00DE:  BCF    FF2.2
 .................... 	print = 1; 
-00E4:  BSF    1F.1
+00E0:  BSF    1F.1
 .................... 	setup_timer_0(T0_OFF); 
-00E6:  CLRF   FD5
+00E2:  CLRF   FD5
+.................... 	set_timer0(0); 
+00E4:  CLRF   FD7
+00E6:  CLRF   FD6
+.................... 	rcv[contBuff] = '\0'; 
+00E8:  MOVLW  20
+00EA:  MOVLB  2
+00EC:  ADDWF  x20,W
+00EE:  MOVWF  FE9
+00F0:  CLRF   FEA
+00F2:  BTFSC  FD8.0
+00F4:  INCF   FEA,F
+00F6:  CLRF   FEF
+.................... 	contBuff = 0; 
+00F8:  CLRF   x20
 .................... } 
 ....................  
-00E8:  BCF    FF2.2
-00EA:  GOTO   006C
-.................... void send_break(int *s) { 
-.................... 	output_high(PIN_C1); 
-.................... 	delay_ms(12); 
-.................... 	output_low(PIN_C1); 
-.................... 	printf("%s", s); 
-.................... //	delay_ms(1000); 
-.................... //	printf("\r\n"); 
-.................... //	delay_ms(10); 
-.................... } 
-....................  
-.................... void addressQuery(void) { 
-.................... 	strcpy(cmd, "?!"); 
-.................... 	send_break(cmd); 
-.................... } 
-....................  
-.................... void acknowledgeActive(void) { 
-.................... 	strcpy(cmd, "0!"); 
-.................... 	send_break(cmd); 
-.................... } 
-....................  
-.................... void sendIdentification(void) { 
-.................... 	strcpy(cmd, "0I!"); 
-.................... 	send_break(cmd); 
-.................... } 
-....................  
-.................... void startMeasurement(void) { 
-.................... 	strcpy(cmd, "0M!"); 
-.................... 	send_break(cmd); 
-.................... } 
-....................  
-.................... void startMeasurementRequestCRC(void) { 
-.................... 	strcpy(cmd, "0MC!"); 
-.................... 	send_break(cmd); 
-.................... } 
-....................  
+00FA:  BCF    FF2.2
+00FC:  MOVLB  0
+00FE:  GOTO   006C
 .................... int main(void) { 
 *
-01CC:  CLRF   FF8
-01CE:  BCF    FD0.7
-01D0:  BSF    07.7
-01D2:  CLRF   FEA
-01D4:  CLRF   FE9
-01D6:  BSF    FB8.3
-01D8:  MOVLW  0A
-01DA:  MOVWF  FAF
-01DC:  MOVLW  1A
-01DE:  MOVWF  FB0
-01E0:  MOVLW  A6
-01E2:  MOVWF  FAC
-01E4:  MOVLW  90
-01E6:  MOVWF  FAB
-01E8:  NOP   
-01EA:  NOP   
-01EC:  MOVLW  85
-01EE:  MOVWF  x97
-01F0:  MOVF   FC1,W
-01F2:  ANDLW  C0
-01F4:  IORLW  0F
-01F6:  MOVWF  FC1
-01F8:  MOVLW  07
-01FA:  MOVWF  FB4
-01FC:  CLRF   19
-01FE:  CLRF   1A
-0200:  BCF    1F.0
-0202:  BCF    1F.1
-0204:  CLRF   20
-0206:  CLRF   21
-0208:  CLRF   22
-020A:  CLRF   23
-020C:  CLRF   24
-020E:  CLRF   25
-0210:  CLRF   26
-0212:  CLRF   27
-0214:  CLRF   28
-0216:  CLRF   29
-0218:  CLRF   2A
-021A:  CLRF   2B
-021C:  CLRF   2C
-021E:  CLRF   2D
-0220:  CLRF   2E
-0222:  CLRF   2F
-0224:  CLRF   30
-0226:  CLRF   31
-0228:  CLRF   32
-022A:  CLRF   33
-022C:  CLRF   34
-022E:  CLRF   35
-0230:  CLRF   36
-0232:  CLRF   37
-0234:  CLRF   38
-0236:  CLRF   39
-0238:  CLRF   3A
-023A:  CLRF   3B
-023C:  CLRF   3C
-023E:  CLRF   3D
-0240:  CLRF   3E
-0242:  CLRF   3F
-0244:  CLRF   40
-0246:  CLRF   41
-0248:  CLRF   42
-024A:  CLRF   43
-024C:  CLRF   44
-024E:  CLRF   45
-0250:  CLRF   46
-0252:  CLRF   47
-0254:  CLRF   48
-0256:  CLRF   49
-0258:  CLRF   4A
-025A:  CLRF   4B
-025C:  CLRF   4C
-025E:  CLRF   4D
-0260:  CLRF   4E
-0262:  CLRF   4F
-0264:  CLRF   50
-0266:  CLRF   51
-0268:  CLRF   52
-026A:  CLRF   53
-026C:  CLRF   54
-026E:  CLRF   55
-0270:  CLRF   56
-0272:  CLRF   57
-0274:  CLRF   58
-0276:  CLRF   59
-0278:  CLRF   5A
-027A:  CLRF   5B
-027C:  CLRF   5C
-027E:  CLRF   5D
-0280:  CLRF   5E
-0282:  CLRF   5F
-0284:  CLRF   60
-0286:  CLRF   61
-0288:  CLRF   62
-028A:  CLRF   63
-028C:  CLRF   64
-028E:  CLRF   65
-0290:  CLRF   66
-0292:  CLRF   67
-0294:  CLRF   68
-0296:  CLRF   69
-0298:  CLRF   6A
-029A:  CLRF   6B
-029C:  CLRF   6C
-029E:  CLRF   6D
-02A0:  CLRF   6E
-02A2:  CLRF   6F
-02A4:  CLRF   70
-02A6:  CLRF   71
-02A8:  CLRF   72
-02AA:  CLRF   73
-02AC:  CLRF   74
-02AE:  CLRF   75
-02B0:  CLRF   76
-02B2:  CLRF   77
-02B4:  CLRF   78
-02B6:  CLRF   79
-02B8:  CLRF   7A
-02BA:  CLRF   7B
-02BC:  CLRF   7C
-02BE:  CLRF   7D
-02C0:  CLRF   7E
-02C2:  CLRF   7F
-02C4:  CLRF   x80
-02C6:  CLRF   x81
-02C8:  CLRF   x82
-02CA:  CLRF   x83
-02CC:  CLRF   x84
-02CE:  CLRF   x85
-02D0:  CLRF   x86
-02D2:  CLRF   x87
-02D4:  CLRF   x88
-02D6:  CLRF   x89
-02D8:  CLRF   x8A
-02DA:  CLRF   x8B
-02DC:  CLRF   x8C
-02DE:  CLRF   x8D
-02E0:  CLRF   x8E
-02E2:  CLRF   x8F
-02E4:  CLRF   x90
-02E6:  CLRF   x91
-02E8:  CLRF   x92
-02EA:  CLRF   x93
-02EC:  CLRF   x94
-02EE:  CLRF   x95
-02F0:  CLRF   x96
-02F2:  CLRF   x98
+09EC:  CLRF   FF8
+09EE:  BCF    FD0.7
+09F0:  BSF    07.7
+09F2:  CLRF   FEA
+09F4:  CLRF   FE9
+09F6:  BSF    FB8.3
+09F8:  MOVLW  40
+09FA:  MOVWF  FAF
+09FC:  MOVLW  03
+09FE:  MOVWF  FB0
+0A00:  MOVLW  A6
+0A02:  MOVWF  FAC
+0A04:  MOVLW  90
+0A06:  MOVWF  FAB
+0A08:  NOP   
+0A0A:  NOP   
+0A0C:  MOVLW  85
+0A0E:  MOVLB  4
+0A10:  MOVWF  x23
+0A12:  MOVF   FC1,W
+0A14:  ANDLW  C0
+0A16:  IORLW  0F
+0A18:  MOVWF  FC1
+0A1A:  MOVLW  07
+0A1C:  MOVWF  FB4
+0A1E:  CLRF   19
+0A20:  CLRF   1A
+0A22:  BCF    1F.0
+0A24:  BCF    1F.1
+0A26:  CLRF   20
+0A28:  CLRF   21
+0A2A:  CLRF   22
+0A2C:  CLRF   23
+0A2E:  CLRF   24
+0A30:  CLRF   25
+0A32:  CLRF   26
+0A34:  CLRF   27
+0A36:  CLRF   28
+0A38:  CLRF   29
+0A3A:  CLRF   2A
+0A3C:  CLRF   2B
+0A3E:  CLRF   2C
+0A40:  CLRF   2D
+0A42:  CLRF   2E
+0A44:  CLRF   2F
+0A46:  CLRF   30
+0A48:  CLRF   31
+0A4A:  CLRF   32
+0A4C:  CLRF   33
+0A4E:  CLRF   34
+0A50:  CLRF   35
+0A52:  CLRF   36
+0A54:  CLRF   37
+0A56:  CLRF   38
+0A58:  CLRF   39
+0A5A:  CLRF   3A
+0A5C:  CLRF   3B
+0A5E:  CLRF   3C
+0A60:  CLRF   3D
+0A62:  CLRF   3E
+0A64:  CLRF   3F
+0A66:  CLRF   40
+0A68:  CLRF   41
+0A6A:  CLRF   42
+0A6C:  CLRF   43
+0A6E:  CLRF   44
+0A70:  CLRF   45
+0A72:  CLRF   46
+0A74:  CLRF   47
+0A76:  CLRF   48
+0A78:  CLRF   49
+0A7A:  CLRF   4A
+0A7C:  CLRF   4B
+0A7E:  CLRF   4C
+0A80:  CLRF   4D
+0A82:  CLRF   4E
+0A84:  CLRF   4F
+0A86:  CLRF   50
+0A88:  CLRF   51
+0A8A:  CLRF   52
+0A8C:  CLRF   53
+0A8E:  CLRF   54
+0A90:  CLRF   55
+0A92:  CLRF   56
+0A94:  CLRF   57
+0A96:  CLRF   58
+0A98:  CLRF   59
+0A9A:  CLRF   5A
+0A9C:  CLRF   5B
+0A9E:  CLRF   5C
+0AA0:  CLRF   5D
+0AA2:  CLRF   5E
+0AA4:  CLRF   5F
+0AA6:  CLRF   60
+0AA8:  CLRF   61
+0AAA:  CLRF   62
+0AAC:  CLRF   63
+0AAE:  CLRF   64
+0AB0:  CLRF   65
+0AB2:  CLRF   66
+0AB4:  CLRF   67
+0AB6:  CLRF   68
+0AB8:  CLRF   69
+0ABA:  CLRF   6A
+0ABC:  CLRF   6B
+0ABE:  CLRF   6C
+0AC0:  CLRF   6D
+0AC2:  CLRF   6E
+0AC4:  CLRF   6F
+0AC6:  CLRF   70
+0AC8:  CLRF   71
+0ACA:  CLRF   72
+0ACC:  CLRF   73
+0ACE:  CLRF   74
+0AD0:  CLRF   75
+0AD2:  CLRF   76
+0AD4:  CLRF   77
+0AD6:  CLRF   78
+0AD8:  CLRF   79
+0ADA:  CLRF   7A
+0ADC:  CLRF   7B
+0ADE:  CLRF   7C
+0AE0:  CLRF   7D
+0AE2:  CLRF   7E
+0AE4:  CLRF   7F
+0AE6:  MOVLB  0
+0AE8:  CLRF   x80
+0AEA:  CLRF   x81
+0AEC:  CLRF   x82
+0AEE:  CLRF   x83
+0AF0:  CLRF   x84
+0AF2:  CLRF   x85
+0AF4:  CLRF   x86
+0AF6:  CLRF   x87
+0AF8:  CLRF   x88
+0AFA:  CLRF   x89
+0AFC:  CLRF   x8A
+0AFE:  CLRF   x8B
+0B00:  CLRF   x8C
+0B02:  CLRF   x8D
+0B04:  CLRF   x8E
+0B06:  CLRF   x8F
+0B08:  CLRF   x90
+0B0A:  CLRF   x91
+0B0C:  CLRF   x92
+0B0E:  CLRF   x93
+0B10:  CLRF   x94
+0B12:  CLRF   x95
+0B14:  CLRF   x96
+0B16:  CLRF   x97
+0B18:  CLRF   x98
+0B1A:  CLRF   x99
+0B1C:  CLRF   x9A
+0B1E:  CLRF   x9B
+0B20:  CLRF   x9C
+0B22:  CLRF   x9D
+0B24:  CLRF   x9E
+0B26:  CLRF   x9F
+0B28:  CLRF   xA0
+0B2A:  CLRF   xA1
+0B2C:  CLRF   xA2
+0B2E:  CLRF   xA3
+0B30:  CLRF   xA4
+0B32:  CLRF   xA5
+0B34:  CLRF   xA6
+0B36:  CLRF   xA7
+0B38:  CLRF   xA8
+0B3A:  CLRF   xA9
+0B3C:  CLRF   xAA
+0B3E:  CLRF   xAB
+0B40:  CLRF   xAC
+0B42:  CLRF   xAD
+0B44:  CLRF   xAE
+0B46:  CLRF   xAF
+0B48:  CLRF   xB0
+0B4A:  CLRF   xB1
+0B4C:  CLRF   xB2
+0B4E:  CLRF   xB3
+0B50:  CLRF   xB4
+0B52:  CLRF   xB5
+0B54:  CLRF   xB6
+0B56:  CLRF   xB7
+0B58:  CLRF   xB8
+0B5A:  CLRF   xB9
+0B5C:  CLRF   xBA
+0B5E:  CLRF   xBB
+0B60:  CLRF   xBC
+0B62:  CLRF   xBD
+0B64:  CLRF   xBE
+0B66:  CLRF   xBF
+0B68:  CLRF   xC0
+0B6A:  CLRF   xC1
+0B6C:  CLRF   xC2
+0B6E:  CLRF   xC3
+0B70:  CLRF   xC4
+0B72:  CLRF   xC5
+0B74:  CLRF   xC6
+0B76:  CLRF   xC7
+0B78:  CLRF   xC8
+0B7A:  CLRF   xC9
+0B7C:  CLRF   xCA
+0B7E:  CLRF   xCB
+0B80:  CLRF   xCC
+0B82:  CLRF   xCD
+0B84:  CLRF   xCE
+0B86:  CLRF   xCF
+0B88:  CLRF   xD0
+0B8A:  CLRF   xD1
+0B8C:  CLRF   xD2
+0B8E:  CLRF   xD3
+0B90:  CLRF   xD4
+0B92:  CLRF   xD5
+0B94:  CLRF   xD6
+0B96:  CLRF   xD7
+0B98:  CLRF   xD8
+0B9A:  CLRF   xD9
+0B9C:  CLRF   xDA
+0B9E:  CLRF   xDB
+0BA0:  CLRF   xDC
+0BA2:  CLRF   xDD
+0BA4:  CLRF   xDE
+0BA6:  CLRF   xDF
+0BA8:  CLRF   xE0
+0BAA:  CLRF   xE1
+0BAC:  CLRF   xE2
+0BAE:  CLRF   xE3
+0BB0:  CLRF   xE4
+0BB2:  CLRF   xE5
+0BB4:  CLRF   xE6
+0BB6:  CLRF   xE7
+0BB8:  CLRF   xE8
+0BBA:  CLRF   xE9
+0BBC:  CLRF   xEA
+0BBE:  CLRF   xEB
+0BC0:  CLRF   xEC
+0BC2:  CLRF   xED
+0BC4:  CLRF   xEE
+0BC6:  CLRF   xEF
+0BC8:  CLRF   xF0
+0BCA:  CLRF   xF1
+0BCC:  CLRF   xF2
+0BCE:  CLRF   xF3
+0BD0:  CLRF   xF4
+0BD2:  CLRF   xF5
+0BD4:  CLRF   xF6
+0BD6:  CLRF   xF7
+0BD8:  CLRF   xF8
+0BDA:  CLRF   xF9
+0BDC:  CLRF   xFA
+0BDE:  CLRF   xFB
+0BE0:  CLRF   xFC
+0BE2:  CLRF   xFD
+0BE4:  CLRF   xFE
+0BE6:  CLRF   xFF
+0BE8:  MOVLB  1
+0BEA:  CLRF   x00
+0BEC:  CLRF   x01
+0BEE:  CLRF   x02
+0BF0:  CLRF   x03
+0BF2:  CLRF   x04
+0BF4:  CLRF   x05
+0BF6:  CLRF   x06
+0BF8:  CLRF   x07
+0BFA:  CLRF   x08
+0BFC:  CLRF   x09
+0BFE:  CLRF   x0A
+0C00:  CLRF   x0B
+0C02:  CLRF   x0C
+0C04:  CLRF   x0D
+0C06:  CLRF   x0E
+0C08:  CLRF   x0F
+0C0A:  CLRF   x10
+0C0C:  CLRF   x11
+0C0E:  CLRF   x12
+0C10:  CLRF   x13
+0C12:  CLRF   x14
+0C14:  CLRF   x15
+0C16:  CLRF   x16
+0C18:  CLRF   x17
+0C1A:  CLRF   x18
+0C1C:  CLRF   x19
+0C1E:  CLRF   x1A
+0C20:  CLRF   x1B
+0C22:  CLRF   x1C
+0C24:  CLRF   x1D
+0C26:  CLRF   x1E
+0C28:  CLRF   x1F
+0C2A:  CLRF   x20
+0C2C:  CLRF   x21
+0C2E:  CLRF   x22
+0C30:  CLRF   x23
+0C32:  CLRF   x24
+0C34:  CLRF   x25
+0C36:  CLRF   x26
+0C38:  CLRF   x27
+0C3A:  CLRF   x28
+0C3C:  CLRF   x29
+0C3E:  CLRF   x2A
+0C40:  CLRF   x2B
+0C42:  CLRF   x2C
+0C44:  CLRF   x2D
+0C46:  CLRF   x2E
+0C48:  CLRF   x2F
+0C4A:  CLRF   x30
+0C4C:  CLRF   x31
+0C4E:  CLRF   x32
+0C50:  CLRF   x33
+0C52:  CLRF   x34
+0C54:  CLRF   x35
+0C56:  CLRF   x36
+0C58:  CLRF   x37
+0C5A:  CLRF   x38
+0C5C:  CLRF   x39
+0C5E:  CLRF   x3A
+0C60:  CLRF   x3B
+0C62:  CLRF   x3C
+0C64:  CLRF   x3D
+0C66:  CLRF   x3E
+0C68:  CLRF   x3F
+0C6A:  CLRF   x40
+0C6C:  CLRF   x41
+0C6E:  CLRF   x42
+0C70:  CLRF   x43
+0C72:  CLRF   x44
+0C74:  CLRF   x45
+0C76:  CLRF   x46
+0C78:  CLRF   x47
+0C7A:  CLRF   x48
+0C7C:  CLRF   x49
+0C7E:  CLRF   x4A
+0C80:  CLRF   x4B
+0C82:  CLRF   x4C
+0C84:  CLRF   x4D
+0C86:  CLRF   x4E
+0C88:  CLRF   x4F
+0C8A:  CLRF   x50
+0C8C:  CLRF   x51
+0C8E:  CLRF   x52
+0C90:  CLRF   x53
+0C92:  CLRF   x54
+0C94:  CLRF   x55
+0C96:  CLRF   x56
+0C98:  CLRF   x57
+0C9A:  CLRF   x58
+0C9C:  CLRF   x59
+0C9E:  CLRF   x5A
+0CA0:  CLRF   x5B
+0CA2:  CLRF   x5C
+0CA4:  CLRF   x5D
+0CA6:  CLRF   x5E
+0CA8:  CLRF   x5F
+0CAA:  CLRF   x60
+0CAC:  CLRF   x61
+0CAE:  CLRF   x62
+0CB0:  CLRF   x63
+0CB2:  CLRF   x64
+0CB4:  CLRF   x65
+0CB6:  CLRF   x66
+0CB8:  CLRF   x67
+0CBA:  CLRF   x68
+0CBC:  CLRF   x69
+0CBE:  CLRF   x6A
+0CC0:  CLRF   x6B
+0CC2:  CLRF   x6C
+0CC4:  CLRF   x6D
+0CC6:  CLRF   x6E
+0CC8:  CLRF   x6F
+0CCA:  CLRF   x70
+0CCC:  CLRF   x71
+0CCE:  CLRF   x72
+0CD0:  CLRF   x73
+0CD2:  CLRF   x74
+0CD4:  CLRF   x75
+0CD6:  CLRF   x76
+0CD8:  CLRF   x77
+0CDA:  CLRF   x78
+0CDC:  CLRF   x79
+0CDE:  CLRF   x7A
+0CE0:  CLRF   x7B
+0CE2:  CLRF   x7C
+0CE4:  CLRF   x7D
+0CE6:  CLRF   x7E
+0CE8:  CLRF   x7F
+0CEA:  CLRF   x80
+0CEC:  CLRF   x81
+0CEE:  CLRF   x82
+0CF0:  CLRF   x83
+0CF2:  CLRF   x84
+0CF4:  CLRF   x85
+0CF6:  CLRF   x86
+0CF8:  CLRF   x87
+0CFA:  CLRF   x88
+0CFC:  CLRF   x89
+0CFE:  CLRF   x8A
+0D00:  CLRF   x8B
+0D02:  CLRF   x8C
+0D04:  CLRF   x8D
+0D06:  CLRF   x8E
+0D08:  CLRF   x8F
+0D0A:  CLRF   x90
+0D0C:  CLRF   x91
+0D0E:  CLRF   x92
+0D10:  CLRF   x93
+0D12:  CLRF   x94
+0D14:  CLRF   x95
+0D16:  CLRF   x96
+0D18:  CLRF   x97
+0D1A:  CLRF   x98
+0D1C:  CLRF   x99
+0D1E:  CLRF   x9A
+0D20:  CLRF   x9B
+0D22:  CLRF   x9C
+0D24:  CLRF   x9D
+0D26:  CLRF   x9E
+0D28:  CLRF   x9F
+0D2A:  CLRF   xA0
+0D2C:  CLRF   xA1
+0D2E:  CLRF   xA2
+0D30:  CLRF   xA3
+0D32:  CLRF   xA4
+0D34:  CLRF   xA5
+0D36:  CLRF   xA6
+0D38:  CLRF   xA7
+0D3A:  CLRF   xA8
+0D3C:  CLRF   xA9
+0D3E:  CLRF   xAA
+0D40:  CLRF   xAB
+0D42:  CLRF   xAC
+0D44:  CLRF   xAD
+0D46:  CLRF   xAE
+0D48:  CLRF   xAF
+0D4A:  CLRF   xB0
+0D4C:  CLRF   xB1
+0D4E:  CLRF   xB2
+0D50:  CLRF   xB3
+0D52:  CLRF   xB4
+0D54:  CLRF   xB5
+0D56:  CLRF   xB6
+0D58:  CLRF   xB7
+0D5A:  CLRF   xB8
+0D5C:  CLRF   xB9
+0D5E:  CLRF   xBA
+0D60:  CLRF   xBB
+0D62:  CLRF   xBC
+0D64:  CLRF   xBD
+0D66:  CLRF   xBE
+0D68:  CLRF   xBF
+0D6A:  CLRF   xC0
+0D6C:  CLRF   xC1
+0D6E:  CLRF   xC2
+0D70:  CLRF   xC3
+0D72:  CLRF   xC4
+0D74:  CLRF   xC5
+0D76:  CLRF   xC6
+0D78:  CLRF   xC7
+0D7A:  CLRF   xC8
+0D7C:  CLRF   xC9
+0D7E:  CLRF   xCA
+0D80:  CLRF   xCB
+0D82:  CLRF   xCC
+0D84:  CLRF   xCD
+0D86:  CLRF   xCE
+0D88:  CLRF   xCF
+0D8A:  CLRF   xD0
+0D8C:  CLRF   xD1
+0D8E:  CLRF   xD2
+0D90:  CLRF   xD3
+0D92:  CLRF   xD4
+0D94:  CLRF   xD5
+0D96:  CLRF   xD6
+0D98:  CLRF   xD7
+0D9A:  CLRF   xD8
+0D9C:  CLRF   xD9
+0D9E:  CLRF   xDA
+0DA0:  CLRF   xDB
+0DA2:  CLRF   xDC
+0DA4:  CLRF   xDD
+0DA6:  CLRF   xDE
+0DA8:  CLRF   xDF
+0DAA:  CLRF   xE0
+0DAC:  CLRF   xE1
+0DAE:  CLRF   xE2
+0DB0:  CLRF   xE3
+0DB2:  CLRF   xE4
+0DB4:  CLRF   xE5
+0DB6:  CLRF   xE6
+0DB8:  CLRF   xE7
+0DBA:  CLRF   xE8
+0DBC:  CLRF   xE9
+0DBE:  CLRF   xEA
+0DC0:  CLRF   xEB
+0DC2:  CLRF   xEC
+0DC4:  CLRF   xED
+0DC6:  CLRF   xEE
+0DC8:  CLRF   xEF
+0DCA:  CLRF   xF0
+0DCC:  CLRF   xF1
+0DCE:  CLRF   xF2
+0DD0:  CLRF   xF3
+0DD2:  CLRF   xF4
+0DD4:  CLRF   xF5
+0DD6:  CLRF   xF6
+0DD8:  CLRF   xF7
+0DDA:  CLRF   xF8
+0DDC:  CLRF   xF9
+0DDE:  CLRF   xFA
+0DE0:  CLRF   xFB
+0DE2:  CLRF   xFC
+0DE4:  CLRF   xFD
+0DE6:  CLRF   xFE
+0DE8:  CLRF   xFF
+0DEA:  MOVLB  2
+0DEC:  CLRF   x00
+0DEE:  CLRF   x01
+0DF0:  CLRF   x02
+0DF2:  CLRF   x03
+0DF4:  CLRF   x04
+0DF6:  CLRF   x05
+0DF8:  CLRF   x06
+0DFA:  CLRF   x07
+0DFC:  CLRF   x08
+0DFE:  CLRF   x09
+0E00:  CLRF   x0A
+0E02:  CLRF   x0B
+0E04:  CLRF   x0C
+0E06:  CLRF   x0D
+0E08:  CLRF   x0E
+0E0A:  CLRF   x0F
+0E0C:  CLRF   x10
+0E0E:  CLRF   x11
+0E10:  CLRF   x12
+0E12:  CLRF   x13
+0E14:  CLRF   x14
+0E16:  CLRF   x15
+0E18:  CLRF   x16
+0E1A:  CLRF   x17
+0E1C:  CLRF   x18
+0E1E:  CLRF   x19
+0E20:  CLRF   x1A
+0E22:  CLRF   x1B
+0E24:  CLRF   x1C
+0E26:  CLRF   x1D
+0E28:  CLRF   x1E
+0E2A:  CLRF   x1F
+0E2C:  CLRF   x20
+0E2E:  CLRF   x21
+0E30:  CLRF   x22
+0E32:  CLRF   x23
+0E34:  CLRF   x24
+0E36:  CLRF   x25
+0E38:  CLRF   x26
+0E3A:  CLRF   x27
+0E3C:  CLRF   x28
+0E3E:  CLRF   x29
+0E40:  CLRF   x2A
+0E42:  CLRF   x2B
+0E44:  CLRF   x2C
+0E46:  CLRF   x2D
+0E48:  CLRF   x2E
+0E4A:  CLRF   x2F
+0E4C:  CLRF   x30
+0E4E:  CLRF   x31
+0E50:  CLRF   x32
+0E52:  CLRF   x33
+0E54:  CLRF   x34
+0E56:  CLRF   x35
+0E58:  CLRF   x36
+0E5A:  CLRF   x37
+0E5C:  CLRF   x38
+0E5E:  CLRF   x39
+0E60:  CLRF   x3A
+0E62:  CLRF   x3B
+0E64:  CLRF   x3C
+0E66:  CLRF   x3D
+0E68:  CLRF   x3E
+0E6A:  CLRF   x3F
+0E6C:  CLRF   x40
+0E6E:  CLRF   x41
+0E70:  CLRF   x42
+0E72:  CLRF   x43
+0E74:  CLRF   x44
+0E76:  CLRF   x45
+0E78:  CLRF   x46
+0E7A:  CLRF   x47
+0E7C:  CLRF   x48
+0E7E:  CLRF   x49
+0E80:  CLRF   x4A
+0E82:  CLRF   x4B
+0E84:  CLRF   x4C
+0E86:  CLRF   x4D
+0E88:  CLRF   x4E
+0E8A:  CLRF   x4F
+0E8C:  CLRF   x50
+0E8E:  CLRF   x51
+0E90:  CLRF   x52
+0E92:  CLRF   x53
+0E94:  CLRF   x54
+0E96:  CLRF   x55
+0E98:  CLRF   x56
+0E9A:  CLRF   x57
+0E9C:  CLRF   x58
+0E9E:  CLRF   x59
+0EA0:  CLRF   x5A
+0EA2:  CLRF   x5B
+0EA4:  CLRF   x5C
+0EA6:  CLRF   x5D
+0EA8:  CLRF   x5E
+0EAA:  CLRF   x5F
+0EAC:  CLRF   x60
+0EAE:  CLRF   x61
+0EB0:  CLRF   x62
+0EB2:  CLRF   x63
+0EB4:  CLRF   x64
+0EB6:  CLRF   x65
+0EB8:  CLRF   x66
+0EBA:  CLRF   x67
+0EBC:  CLRF   x68
+0EBE:  CLRF   x69
+0EC0:  CLRF   x6A
+0EC2:  CLRF   x6B
+0EC4:  CLRF   x6C
+0EC6:  CLRF   x6D
+0EC8:  CLRF   x6E
+0ECA:  CLRF   x6F
+0ECC:  CLRF   x70
+0ECE:  CLRF   x71
+0ED0:  CLRF   x72
+0ED2:  CLRF   x73
+0ED4:  CLRF   x74
+0ED6:  CLRF   x75
+0ED8:  CLRF   x76
+0EDA:  CLRF   x77
+0EDC:  CLRF   x78
+0EDE:  CLRF   x79
+0EE0:  CLRF   x7A
+0EE2:  CLRF   x7B
+0EE4:  CLRF   x7C
+0EE6:  CLRF   x7D
+0EE8:  CLRF   x7E
+0EEA:  CLRF   x7F
+0EEC:  CLRF   x80
+0EEE:  CLRF   x81
+0EF0:  CLRF   x82
+0EF2:  CLRF   x83
+0EF4:  CLRF   x84
+0EF6:  CLRF   x85
+0EF8:  CLRF   x86
+0EFA:  CLRF   x87
+0EFC:  CLRF   x88
+0EFE:  CLRF   x89
+0F00:  CLRF   x8A
+0F02:  CLRF   x8B
+0F04:  CLRF   x8C
+0F06:  CLRF   x8D
+0F08:  CLRF   x8E
+0F0A:  CLRF   x8F
+0F0C:  CLRF   x90
+0F0E:  CLRF   x91
+0F10:  CLRF   x92
+0F12:  CLRF   x93
+0F14:  CLRF   x94
+0F16:  CLRF   x95
+0F18:  CLRF   x96
+0F1A:  CLRF   x97
+0F1C:  CLRF   x98
+0F1E:  CLRF   x99
+0F20:  CLRF   x9A
+0F22:  CLRF   x9B
+0F24:  CLRF   x9C
+0F26:  CLRF   x9D
+0F28:  CLRF   x9E
+0F2A:  CLRF   x9F
+0F2C:  CLRF   xA0
+0F2E:  CLRF   xA1
+0F30:  CLRF   xA2
+0F32:  CLRF   xA3
+0F34:  CLRF   xA4
+0F36:  CLRF   xA5
+0F38:  CLRF   xA6
+0F3A:  CLRF   xA7
+0F3C:  CLRF   xA8
+0F3E:  CLRF   xA9
+0F40:  CLRF   xAA
+0F42:  CLRF   xAB
+0F44:  CLRF   xAC
+0F46:  CLRF   xAD
+0F48:  CLRF   xAE
+0F4A:  CLRF   xAF
+0F4C:  CLRF   xB0
+0F4E:  CLRF   xB1
+0F50:  CLRF   xB2
+0F52:  CLRF   xB3
+0F54:  CLRF   xB4
+0F56:  CLRF   xB5
+0F58:  CLRF   xB6
+0F5A:  CLRF   xB7
+0F5C:  CLRF   xB8
+0F5E:  CLRF   xB9
+0F60:  CLRF   xBA
+0F62:  CLRF   xBB
+0F64:  CLRF   xBC
+0F66:  CLRF   xBD
+0F68:  CLRF   xBE
+0F6A:  CLRF   xBF
+0F6C:  CLRF   xC0
+0F6E:  CLRF   xC1
+0F70:  CLRF   xC2
+0F72:  CLRF   xC3
+0F74:  CLRF   xC4
+0F76:  CLRF   xC5
+0F78:  CLRF   xC6
+0F7A:  CLRF   xC7
+0F7C:  CLRF   xC8
+0F7E:  CLRF   xC9
+0F80:  CLRF   xCA
+0F82:  CLRF   xCB
+0F84:  CLRF   xCC
+0F86:  CLRF   xCD
+0F88:  CLRF   xCE
+0F8A:  CLRF   xCF
+0F8C:  CLRF   xD0
+0F8E:  CLRF   xD1
+0F90:  CLRF   xD2
+0F92:  CLRF   xD3
+0F94:  CLRF   xD4
+0F96:  CLRF   xD5
+0F98:  CLRF   xD6
+0F9A:  CLRF   xD7
+0F9C:  CLRF   xD8
+0F9E:  CLRF   xD9
+0FA0:  CLRF   xDA
+0FA2:  CLRF   xDB
+0FA4:  CLRF   xDC
+0FA6:  CLRF   xDD
+0FA8:  CLRF   xDE
+0FAA:  CLRF   xDF
+0FAC:  CLRF   xE0
+0FAE:  CLRF   xE1
+0FB0:  CLRF   xE2
+0FB2:  CLRF   xE3
+0FB4:  CLRF   xE4
+0FB6:  CLRF   xE5
+0FB8:  CLRF   xE6
+0FBA:  CLRF   xE7
+0FBC:  CLRF   xE8
+0FBE:  CLRF   xE9
+0FC0:  CLRF   xEA
+0FC2:  CLRF   xEB
+0FC4:  CLRF   xEC
+0FC6:  CLRF   xED
+0FC8:  CLRF   xEE
+0FCA:  CLRF   xEF
+0FCC:  CLRF   xF0
+0FCE:  CLRF   xF1
+0FD0:  CLRF   xF2
+0FD2:  CLRF   xF3
+0FD4:  CLRF   xF4
+0FD6:  CLRF   xF5
+0FD8:  CLRF   xF6
+0FDA:  CLRF   xF7
+0FDC:  CLRF   xF8
+0FDE:  CLRF   xF9
+0FE0:  CLRF   xFA
+0FE2:  CLRF   xFB
+0FE4:  CLRF   xFC
+0FE6:  CLRF   xFD
+0FE8:  CLRF   xFE
+0FEA:  CLRF   xFF
+0FEC:  MOVLB  3
+0FEE:  CLRF   x00
+0FF0:  CLRF   x01
+0FF2:  CLRF   x02
+0FF4:  CLRF   x03
+0FF6:  CLRF   x04
+0FF8:  CLRF   x05
+0FFA:  CLRF   x06
+0FFC:  CLRF   x07
+0FFE:  CLRF   x08
+1000:  CLRF   x09
+1002:  CLRF   x0A
+1004:  CLRF   x0B
+1006:  CLRF   x0C
+1008:  CLRF   x0D
+100A:  CLRF   x0E
+100C:  CLRF   x0F
+100E:  CLRF   x10
+1010:  CLRF   x11
+1012:  CLRF   x12
+1014:  CLRF   x13
+1016:  CLRF   x14
+1018:  CLRF   x15
+101A:  CLRF   x16
+101C:  CLRF   x17
+101E:  CLRF   x18
+1020:  CLRF   x19
+1022:  CLRF   x1A
+1024:  CLRF   x1B
+1026:  CLRF   x1C
+1028:  CLRF   x1D
+102A:  CLRF   x1E
+102C:  CLRF   x1F
+102E:  CLRF   x20
+1030:  CLRF   x21
+1032:  CLRF   x22
+1034:  CLRF   x23
+1036:  CLRF   x24
+1038:  CLRF   x25
+103A:  CLRF   x26
+103C:  CLRF   x27
+103E:  CLRF   x28
+1040:  CLRF   x29
+1042:  CLRF   x2A
+1044:  CLRF   x2B
+1046:  CLRF   x2C
+1048:  CLRF   x2D
+104A:  CLRF   x2E
+104C:  CLRF   x2F
+104E:  CLRF   x30
+1050:  CLRF   x31
+1052:  CLRF   x32
+1054:  CLRF   x33
+1056:  CLRF   x34
+1058:  CLRF   x35
+105A:  CLRF   x36
+105C:  CLRF   x37
+105E:  CLRF   x38
+1060:  CLRF   x39
+1062:  CLRF   x3A
+1064:  CLRF   x3B
+1066:  CLRF   x3C
+1068:  CLRF   x3D
+106A:  CLRF   x3E
+106C:  CLRF   x3F
+106E:  CLRF   x40
+1070:  CLRF   x41
+1072:  CLRF   x42
+1074:  CLRF   x43
+1076:  CLRF   x44
+1078:  CLRF   x45
+107A:  CLRF   x46
+107C:  CLRF   x47
+107E:  CLRF   x48
+1080:  CLRF   x49
+1082:  CLRF   x4A
+1084:  CLRF   x4B
+1086:  CLRF   x4C
+1088:  CLRF   x4D
+108A:  CLRF   x4E
+108C:  CLRF   x4F
+108E:  CLRF   x50
+1090:  CLRF   x51
+1092:  CLRF   x52
+1094:  CLRF   x53
+1096:  CLRF   x54
+1098:  CLRF   x55
+109A:  CLRF   x56
+109C:  CLRF   x57
+109E:  CLRF   x58
+10A0:  CLRF   x59
+10A2:  CLRF   x5A
+10A4:  CLRF   x5B
+10A6:  CLRF   x5C
+10A8:  CLRF   x5D
+10AA:  CLRF   x5E
+10AC:  CLRF   x5F
+10AE:  CLRF   x60
+10B0:  CLRF   x61
+10B2:  CLRF   x62
+10B4:  CLRF   x63
+10B6:  CLRF   x64
+10B8:  CLRF   x65
+10BA:  CLRF   x66
+10BC:  CLRF   x67
+10BE:  CLRF   x68
+10C0:  CLRF   x69
+10C2:  CLRF   x6A
+10C4:  CLRF   x6B
+10C6:  CLRF   x6C
+10C8:  CLRF   x6D
+10CA:  CLRF   x6E
+10CC:  CLRF   x6F
+10CE:  CLRF   x70
+10D0:  CLRF   x71
+10D2:  CLRF   x72
+10D4:  CLRF   x73
+10D6:  CLRF   x74
+10D8:  CLRF   x75
+10DA:  CLRF   x76
+10DC:  CLRF   x77
+10DE:  CLRF   x78
+10E0:  CLRF   x79
+10E2:  CLRF   x7A
+10E4:  CLRF   x7B
+10E6:  CLRF   x7C
+10E8:  CLRF   x7D
+10EA:  CLRF   x7E
+10EC:  CLRF   x7F
+10EE:  CLRF   x80
+10F0:  CLRF   x81
+10F2:  CLRF   x82
+10F4:  CLRF   x83
+10F6:  CLRF   x84
+10F8:  CLRF   x85
+10FA:  CLRF   x86
+10FC:  CLRF   x87
+10FE:  CLRF   x88
+1100:  CLRF   x89
+1102:  CLRF   x8A
+1104:  CLRF   x8B
+1106:  CLRF   x8C
+1108:  CLRF   x8D
+110A:  CLRF   x8E
+110C:  CLRF   x8F
+110E:  CLRF   x90
+1110:  CLRF   x91
+1112:  CLRF   x92
+1114:  CLRF   x93
+1116:  CLRF   x94
+1118:  CLRF   x95
+111A:  CLRF   x96
+111C:  CLRF   x97
+111E:  CLRF   x98
+1120:  CLRF   x99
+1122:  CLRF   x9A
+1124:  CLRF   x9B
+1126:  CLRF   x9C
+1128:  CLRF   x9D
+112A:  CLRF   x9E
+112C:  CLRF   x9F
+112E:  CLRF   xA0
+1130:  CLRF   xA1
+1132:  CLRF   xA2
+1134:  CLRF   xA3
+1136:  CLRF   xA4
+1138:  CLRF   xA5
+113A:  CLRF   xA6
+113C:  CLRF   xA7
+113E:  CLRF   xA8
+1140:  CLRF   xA9
+1142:  CLRF   xAA
+1144:  CLRF   xAB
+1146:  CLRF   xAC
+1148:  CLRF   xAD
+114A:  CLRF   xAE
+114C:  CLRF   xAF
+114E:  CLRF   xB0
+1150:  CLRF   xB1
+1152:  CLRF   xB2
+1154:  CLRF   xB3
+1156:  CLRF   xB4
+1158:  CLRF   xB5
+115A:  CLRF   xB6
+115C:  CLRF   xB7
+115E:  CLRF   xB8
+1160:  CLRF   xB9
+1162:  CLRF   xBA
+1164:  CLRF   xBB
+1166:  CLRF   xBC
+1168:  CLRF   xBD
+116A:  CLRF   xBE
+116C:  CLRF   xBF
+116E:  CLRF   xC0
+1170:  CLRF   xC1
+1172:  CLRF   xC2
+1174:  CLRF   xC3
+1176:  CLRF   xC4
+1178:  CLRF   xC5
+117A:  CLRF   xC6
+117C:  CLRF   xC7
+117E:  CLRF   xC8
+1180:  CLRF   xC9
+1182:  CLRF   xCA
+1184:  CLRF   xCB
+1186:  CLRF   xCC
+1188:  CLRF   xCD
+118A:  CLRF   xCE
+118C:  CLRF   xCF
+118E:  CLRF   xD0
+1190:  CLRF   xD1
+1192:  CLRF   xD2
+1194:  CLRF   xD3
+1196:  CLRF   xD4
+1198:  CLRF   xD5
+119A:  CLRF   xD6
+119C:  CLRF   xD7
+119E:  CLRF   xD8
+11A0:  CLRF   xD9
+11A2:  CLRF   xDA
+11A4:  CLRF   xDB
+11A6:  CLRF   xDC
+11A8:  CLRF   xDD
+11AA:  CLRF   xDE
+11AC:  CLRF   xDF
+11AE:  CLRF   xE0
+11B0:  CLRF   xE1
+11B2:  CLRF   xE2
+11B4:  CLRF   xE3
+11B6:  CLRF   xE4
+11B8:  CLRF   xE5
+11BA:  CLRF   xE6
+11BC:  CLRF   xE7
+11BE:  CLRF   xE8
+11C0:  CLRF   xE9
+11C2:  CLRF   xEA
+11C4:  CLRF   xEB
+11C6:  CLRF   xEC
+11C8:  CLRF   xED
+11CA:  CLRF   xEE
+11CC:  CLRF   xEF
+11CE:  CLRF   xF0
+11D0:  CLRF   xF1
+11D2:  CLRF   xF2
+11D4:  CLRF   xF3
+11D6:  CLRF   xF4
+11D8:  CLRF   xF5
+11DA:  CLRF   xF6
+11DC:  CLRF   xF7
+11DE:  CLRF   xF8
+11E0:  CLRF   xF9
+11E2:  CLRF   xFA
+11E4:  CLRF   xFB
+11E6:  CLRF   xFC
+11E8:  CLRF   xFD
+11EA:  CLRF   xFE
+11EC:  CLRF   xFF
+11EE:  MOVLB  4
+11F0:  CLRF   x00
+11F2:  CLRF   x01
+11F4:  CLRF   x02
+11F6:  CLRF   x03
+11F8:  CLRF   x04
+11FA:  CLRF   x05
+11FC:  CLRF   x06
+11FE:  CLRF   x07
+1200:  CLRF   x08
+1202:  CLRF   x09
+1204:  CLRF   x0A
+1206:  CLRF   x0B
+1208:  CLRF   x0C
+120A:  CLRF   x0D
+120C:  CLRF   x0E
+120E:  CLRF   x0F
+1210:  CLRF   x10
+1212:  CLRF   x11
+1214:  CLRF   x12
+1216:  CLRF   x13
+1218:  CLRF   x14
+121A:  CLRF   x15
+121C:  CLRF   x16
+121E:  CLRF   x17
+1220:  CLRF   x18
+1222:  CLRF   x19
+1224:  CLRF   x1A
+1226:  CLRF   x1B
+1228:  CLRF   x1C
+122A:  CLRF   x1D
+122C:  CLRF   x1E
+122E:  CLRF   x1F
+1230:  CLRF   x20
+1232:  CLRF   x21
+1234:  CLRF   x22
+1236:  CLRF   x24
+1238:  CLRF   x25
+123A:  CLRF   x26
+123C:  CLRF   x27
+123E:  CLRF   x28
+1240:  CLRF   x29
+1242:  CLRF   x2A
+1244:  CLRF   x2B
+1246:  CLRF   x2C
+1248:  CLRF   x2D
+124A:  CLRF   x2E
+124C:  CLRF   x2F
+124E:  CLRF   x30
+1250:  CLRF   x31
+1252:  CLRF   x32
+1254:  CLRF   x33
+1256:  CLRF   x34
+1258:  CLRF   x35
+125A:  CLRF   x36
+125C:  CLRF   x37
+125E:  CLRF   x38
+1260:  CLRF   x39
+1262:  CLRF   x3A
+1264:  CLRF   x3B
+1266:  CLRF   x3C
+1268:  CLRF   x3D
+126A:  CLRF   x3E
+126C:  CLRF   x3F
+126E:  CLRF   x40
+1270:  CLRF   x41
+1272:  CLRF   x42
+1274:  CLRF   x43
+1276:  CLRF   x44
+1278:  CLRF   x45
+127A:  CLRF   x46
+127C:  CLRF   x47
+127E:  CLRF   x48
+1280:  CLRF   x49
+1282:  CLRF   x4A
+1284:  CLRF   x4B
+1286:  CLRF   x4C
+1288:  CLRF   x4D
+128A:  CLRF   x4E
+128C:  CLRF   x4F
+128E:  CLRF   x50
+1290:  CLRF   x51
+1292:  CLRF   x52
+1294:  CLRF   x53
+1296:  CLRF   x54
+1298:  CLRF   x55
+129A:  CLRF   x56
+129C:  CLRF   x57
+129E:  CLRF   x58
+12A0:  CLRF   x59
+12A2:  CLRF   x5A
+12A4:  CLRF   x5B
+12A6:  CLRF   x5C
+12A8:  CLRF   x5D
+12AA:  CLRF   x5E
+12AC:  CLRF   x5F
+12AE:  CLRF   x60
+12B0:  CLRF   x61
+12B2:  CLRF   x62
+12B4:  CLRF   x63
+12B6:  CLRF   x64
+12B8:  CLRF   x65
+12BA:  CLRF   x66
+12BC:  CLRF   x67
+12BE:  CLRF   x68
+12C0:  CLRF   x69
+12C2:  CLRF   x6A
+12C4:  CLRF   x6B
+12C6:  CLRF   x6C
+12C8:  CLRF   x6D
+12CA:  CLRF   x6E
+12CC:  CLRF   x6F
+12CE:  CLRF   x70
+12D0:  CLRF   x71
+12D2:  CLRF   x72
+12D4:  CLRF   x73
+12D6:  CLRF   x74
+12D8:  CLRF   x75
+12DA:  CLRF   x76
+12DC:  CLRF   x77
+12DE:  CLRF   x78
+12E0:  CLRF   x79
+12E2:  CLRF   x7A
+12E4:  CLRF   x7B
+12E6:  CLRF   x7C
+12E8:  CLRF   x7D
+12EA:  CLRF   x7E
+12EC:  CLRF   x7F
+12EE:  CLRF   x80
+12F0:  CLRF   x81
+12F2:  CLRF   x82
+12F4:  CLRF   x83
+12F6:  CLRF   x84
+12F8:  CLRF   x85
+12FA:  CLRF   x86
+12FC:  CLRF   x87
+12FE:  CLRF   x88
+1300:  CLRF   x89
+1302:  CLRF   x8A
+1304:  CLRF   x8B
+1306:  CLRF   x8C
+1308:  CLRF   x8D
+130A:  CLRF   x8E
+130C:  CLRF   x8F
+130E:  CLRF   x90
+1310:  CLRF   x91
+1312:  CLRF   x92
+1314:  CLRF   x93
+1316:  CLRF   x94
+1318:  CLRF   x95
+131A:  CLRF   x96
+131C:  CLRF   x97
+131E:  CLRF   x98
+1320:  CLRF   x99
+1322:  CLRF   x9A
+1324:  CLRF   x9B
+1326:  CLRF   x9C
+1328:  CLRF   x9D
+132A:  CLRF   x9E
+132C:  CLRF   x9F
+132E:  CLRF   xA0
+1330:  CLRF   xA1
+1332:  CLRF   xA2
+1334:  CLRF   xA3
 .................... 	clear_interrupt(INT_RDA); 
 .................... 	enable_interrupts(INT_RDA); 
-02F4:  BSF    F9D.5
+1336:  BSF    F9D.5
 .................... 	clear_interrupt(INT_TIMER0); 
-02F6:  BCF    FF2.2
+1338:  BCF    FF2.2
 .................... 	enable_interrupts(INT_TIMER0); 
-02F8:  BSF    FF2.5
+133A:  BSF    FF2.5
 .................... 	enable_interrupts(GLOBAL); 
-02FA:  MOVLW  C0
-02FC:  IORWF  FF2,F
-.................... 	output_low(PIN_D2); 
-02FE:  BCF    F95.2
-0300:  BCF    F8C.2
+133C:  MOVLW  C0
+133E:  IORWF  FF2,F
+.................... 	printf("Hello"); 
+1340:  MOVLW  02
+1342:  MOVWF  FF6
+1344:  MOVLW  01
+1346:  MOVWF  FF7
+1348:  MOVLB  0
+134A:  GOTO   0116
 .................... 	while (TRUE) { 
 .................... 		if (!input(PIN_A0)) { 
-0302:  BSF    F92.0
-0304:  BTFSC  F80.0
-0306:  BRA    0320
+134E:  BSF    F92.0
+1350:  BTFSC  F80.0
+1352:  BRA    136E
 .................... 			delay_ms(200); 
-0308:  MOVLW  C8
-030A:  MOVWF  x9B
-030C:  RCALL  00EE
+1354:  MOVLW  C8
+1356:  MOVLB  4
+1358:  MOVWF  xA6
+135A:  MOVLB  0
+135C:  CALL   013A
 .................... 			if (!input(PIN_A0) && ctrl) { 
-030E:  BSF    F92.0
-0310:  BTFSC  F80.0
-0312:  BRA    031E
-0314:  BTFSS  1F.0
-0316:  BRA    031E
+1360:  BSF    F92.0
+1362:  BTFSC  F80.0
+1364:  BRA    136C
+1366:  BTFSS  1F.0
+1368:  BRA    136C
 .................... 				ctrl = 0; 
-0318:  BCF    1F.0
-.................... //				addressQuery(); 
-.................... //				acknowledgeActive(); 
-.................... //				sendIdentification(); 
-.................... //				startMeasurement(); 
-.................... //				startMeasurementRequestCRC(); 
-.................... //				printf("Hello"); 
-.................... 				output_high(PIN_D2); 
-031A:  BCF    F95.2
-031C:  BSF    F8C.2
+136A:  BCF    1F.0
 .................... 			} 
 .................... 		} else if (!ctrl) { 
-031E:  BRA    032C
-0320:  BTFSC  1F.0
-0322:  BRA    032C
+136C:  BRA    1380
+136E:  BTFSC  1F.0
+1370:  BRA    1380
 .................... 			delay_ms(200); 
-0324:  MOVLW  C8
-0326:  MOVWF  x9B
-0328:  RCALL  00EE
+1372:  MOVLW  C8
+1374:  MOVLB  4
+1376:  MOVWF  xA6
+1378:  MOVLB  0
+137A:  CALL   013A
 .................... 			ctrl = 1; 
-032A:  BSF    1F.0
+137E:  BSF    1F.0
 .................... 		} 
 .................... 		if (print) { 
-032C:  BTFSS  1F.1
-032E:  BRA    038C
+1380:  BTFSS  1F.1
+1382:  BRA    14B0
 .................... 			print = 0; 
-0330:  BCF    1F.1
-.................... 			printf("%s", rcv); 
-0332:  CLRF   FEA
-0334:  MOVLW  20
-0336:  MOVWF  FE9
-0338:  BRA    0114
-.................... 			for (contBuff = 0; contBuff < 100; contBuff++) { 
-033A:  CLRF   x8E
-033C:  MOVF   x8E,W
-033E:  SUBLW  63
-0340:  BNC   0384
-.................... 				if (rcv[contBuff] == '-') { 
-0342:  CLRF   03
-0344:  MOVF   x8E,W
-0346:  ADDLW  20
-0348:  MOVWF  FE9
-034A:  MOVLW  00
-034C:  ADDWFC 03,W
-034E:  MOVWF  FEA
-0350:  MOVF   FEF,W
-0352:  SUBLW  2D
-0354:  BNZ   036A
-.................... 					strncpy(aux, rcv, 6); 
-0356:  CLRF   x9C
-0358:  MOVLW  90
-035A:  MOVWF  x9B
-035C:  CLRF   x9E
-035E:  MOVLW  20
-0360:  MOVWF  x9D
-0362:  CLRF   xA0
-0364:  MOVLW  06
-0366:  MOVWF  x9F
-0368:  BRA    013C
+1384:  BCF    1F.1
+.................... 			for (p = rcv; *p != '\0'; p++) { 
+1386:  MOVLB  4
+1388:  CLRF   xA5
+138A:  MOVLW  20
+138C:  MOVWF  xA4
+138E:  MOVFF  4A5,03
+1392:  MOVFF  4A4,FE9
+1396:  MOVFF  4A5,FEA
+139A:  MOVF   FEF,F
+139C:  BZ    1476
+.................... 				if ((*p == '-') || (*p >= 48 && *p <= 57) || (*p == '.')) { 
+139E:  MOVFF  4A5,03
+13A2:  MOVFF  4A4,FE9
+13A6:  MOVFF  4A5,FEA
+13AA:  MOVF   FEF,W
+13AC:  SUBLW  2D
+13AE:  BZ    13E6
+13B0:  MOVFF  4A5,03
+13B4:  MOVFF  4A4,FE9
+13B8:  MOVFF  4A5,FEA
+13BC:  MOVF   FEF,W
+13BE:  SUBLW  2F
+13C0:  BC    13D4
+13C2:  MOVFF  4A5,03
+13C6:  MOVFF  4A4,FE9
+13CA:  MOVFF  4A5,FEA
+13CE:  MOVF   FEF,W
+13D0:  SUBLW  39
+13D2:  BC    13E6
+13D4:  MOVFF  4A5,03
+13D8:  MOVFF  4A4,FE9
+13DC:  MOVFF  4A5,FEA
+13E0:  MOVF   FEF,W
+13E2:  SUBLW  2E
+13E4:  BNZ   1414
+.................... 					aux[contAux++] = *p; 
+13E6:  MOVF   x21,W
+13E8:  INCF   x21,F
+13EA:  ADDLW  21
+13EC:  MOVWF  01
+13EE:  MOVLW  02
+13F0:  MOVWF  03
+13F2:  BTFSC  FD8.0
+13F4:  INCF   03,F
+13F6:  MOVFF  03,4A7
+13FA:  MOVFF  4A4,FE9
+13FE:  MOVFF  4A5,FEA
+1402:  MOVFF  FEF,4A8
+1406:  MOVFF  4A7,FEA
+140A:  MOVFF  01,FE9
+140E:  MOVFF  4A8,FEF
+.................... 				} else if (contAux) { 
+1412:  BRA    146E
+1414:  MOVF   x21,F
+1416:  BZ    146E
+.................... 					aux[contAux] = '\0'; 
+1418:  MOVLW  21
+141A:  ADDWF  x21,W
+141C:  MOVWF  FE9
+141E:  MOVLW  02
+1420:  MOVWF  FEA
+1422:  BTFSC  FD8.0
+1424:  INCF   FEA,F
+1426:  CLRF   FEF
+.................... 					nrs[nrAchados++] = atof(aux); 
+1428:  MOVF   x22,W
+142A:  INCF   x22,F
+142C:  MULLW  04
+142E:  MOVF   FF3,W
+1430:  CLRF   03
+1432:  ADDLW  24
+1434:  MOVWF  01
+1436:  MOVLW  04
+1438:  ADDWFC 03,F
+143A:  MOVFF  01,4A6
+143E:  MOVFF  03,4A7
+1442:  MOVLW  02
+1444:  MOVWF  xA9
+1446:  MOVLW  21
+1448:  MOVWF  xA8
+144A:  CLRF   xAB
+144C:  CLRF   xAA
+144E:  MOVLB  0
+1450:  GOTO   0666
+1454:  MOVFF  4A7,FEA
+1458:  MOVFF  4A6,FE9
+145C:  MOVFF  00,FEF
+1460:  MOVFF  01,FEC
+1464:  MOVFF  02,FEC
+1468:  MOVFF  03,FEC
+146C:  MOVLB  4
 .................... 				} 
-.................... //				if (rcv[contBuff] == '-' || cont < 6) { 
-.................... //					aux[cont++] = rcv[contBuff]; 
-.................... //					if (cont == 5) { 
-.................... //						temp = atoi(aux); 
-.................... //					} 
-.................... //				} 
-.................... 				rcv[contBuff] = "\0"; 
-036A:  CLRF   03
-036C:  MOVF   x8E,W
-036E:  ADDLW  20
-0370:  MOVWF  01
-0372:  MOVLW  00
-0374:  ADDWFC 03,F
-0376:  MOVFF  03,FEA
-037A:  MOVFF  01,FE9
-037E:  CLRF   FEF
 .................... 			} 
-0380:  INCF   x8E,F
-0382:  BRA    033C
-.................... 			cont = 0; 
-0384:  CLRF   x96
-.................... 			contBuff = 0; 
-0386:  CLRF   x8E
-.................... 			output_low(PIN_D2); 
-0388:  BCF    F95.2
-038A:  BCF    F8C.2
+146E:  INCF   xA4,F
+1470:  BTFSC  FD8.2
+1472:  INCF   xA5,F
+1474:  BRA    138E
+.................... 			printf("\f"); 
+1476:  MOVLW  0C
+1478:  BTFSS  F9E.4
+147A:  BRA    1478
+147C:  MOVWF  FAD
+.................... 			printf("%d numeros:\n", nrAchados); 
+147E:  MOVFF  422,4A6
+1482:  MOVLW  1F
+1484:  MOVWF  xA7
+1486:  MOVLB  0
+1488:  GOTO   08E2
+148C:  MOVLW  0A
+148E:  MOVWF  FF6
+1490:  MOVLW  01
+1492:  MOVWF  FF7
+1494:  MOVLW  0A
+1496:  MOVLB  4
+1498:  MOVWF  xA6
+149A:  MOVLB  0
+149C:  GOTO   09C0
+.................... //			for (contAux = 0; contAux < nrAchados; contAux++) 
+.................... //				printf("%.2f ", nrs[contAux]); 
+.................... 			contAux = 0; 
+14A0:  MOVLB  4
+14A2:  CLRF   x21
+.................... 			nrAchados = 0; 
+14A4:  CLRF   x22
+.................... 			nrs[0] = '\0'; 
+14A6:  CLRF   x27
+14A8:  CLRF   x26
+14AA:  CLRF   x25
+14AC:  CLRF   x24
+14AE:  MOVLB  0
 .................... 		} 
 .................... 	} 
-038C:  BRA    0302
+14B0:  BRA    134E
 .................... 	return 0; 
-038E:  MOVLW  00
-0390:  MOVWF  01
+14B2:  MOVLW  00
+14B4:  MOVWF  01
 .................... } 
 ....................  
-0392:  SLEEP 
+14B6:  SLEEP 
 
 Configuration Fuses:
    Word  1: C600   H4 FCMEN IESO
